@@ -1,0 +1,54 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+    .required-star {
+        color: red;
+        font-weight: bold;
+        margin-left: 2px;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg p-4 col-md-6 rounded-4 border-0">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="mb-4 text-center fw-bold">
+                        ✍️ Blog Post
+                    </legend>
+
+                    <!-- Title Field -->
+                    <div class="form-group mb-3">
+                        <label for="id_title" class="form-label">
+                            Title <span class="required-star">*</span>
+                        </label>
+                        <input type="text" class="form-control shadow-sm" id="id_title" name="title" placeholder="Enter title" required>
+                    </div>
+
+                    <!-- Content Field -->
+                    <div class="form-group mb-3">
+                        <label for="id_content" class="form-label">
+                            Content <span class="required-star">*</span>
+                        </label>
+                        <textarea class="form-control shadow-sm" id="id_content" name="content" rows="6" placeholder="Write your blog content here..." required></textarea>
+                    </div>
+                </fieldset>
+
+                <!-- Submit Button -->
+                <div class="d-grid mt-4">
+                    <button class="btn btn-primary btn-lg rounded-3 shadow-sm" type="submit">
+                        🚀 Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

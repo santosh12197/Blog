@@ -1,0 +1,105 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <a href="{% url 'blog-home' %}" class="btn btn-secondary btn-lg rounded-3 shadow-sm">
+        Back
+    </a>
+    <div class="container mt-4">
+        <h3>All posts by {{ author }} ({{ user_posts_count }})</h3>
+    </div>
+    {% for post in posts %}
+        <div class="container card shadow mt-2">
+            <div class="card-body d-flex align-items-center">
+                <!-- Left side (image) -->
+                <div class="me-3">
+                    <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}" alt="">
+                </div>
+
+                <!-- Right side (text) -->
+                <div>
+                    <p><strong>{{ post.author }}</strong> - {{ post.date_posted|date:"F d, Y" }}</p>
+                    <a href="{% url 'post-detail' post.id %}" style="text-decoration: none; color: black;"><h3>{{ post.title }}</h3></a>
+                    <p>{{ post.content }}</p>
+
+                    {% if request.user == post.author %}
+                        <!-- Update post button -->
+                        <a href="{% url 'post-update' post.id %}" class="btn btn-warning">
+                            Update Post
+                        </a>
+                        <!-- delete post button -->
+                        <form method="POST" action="{% url 'post-delete' post.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this post?');">
+                                Delete
+                            </button>
+                        </form>
+                    {% endif %}
+                        
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            <!-- Previous Button -->
+            {% if posts.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            {% endif %}
+
+            <!-- First Page -->
+            {% if posts.number > 3 %}
+                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+
+            <!-- Pages Around Current -->
+            {% for num in posts.paginator.page_range %}
+                {% if num >= posts.number|add:-2 and num <= posts.number|add:2 %}
+                    {% if posts.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            <!-- Last Page -->
+            {% if posts.number < posts.paginator.num_pages|add:-2 %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+                <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">{{ posts.paginator.num_pages }}</a></li>
+            {% endif %}
+
+            <!-- Next Button -->
+            {% if posts.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+
+    <style>
+        .article-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+    
+
+
+
+{% endblock %}
