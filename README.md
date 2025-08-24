@@ -37,14 +37,14 @@ git clone https://github.com/santosh12197/Blog.git
 cd blog-post-project
 
 ### 3. create and then activate virtual env
-python3.11 -m venv venv
+python3.11 -m venv venv <br>
 source venv/bin/activate   # On Windows: venv\Scripts\activate
 
 ### 4. Install dependencies
 pip install -r requirements.txt
 
 ### 5. Run migrations command to sync db
-python manage.py makemigrations
+python manage.py makemigrations <br>
 python manage.py migrate
 
 ### 6. Run the development server
