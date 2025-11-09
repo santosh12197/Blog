@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-efy03nmg+6-witnoi500svhv-y108jd+s8f6n-ad=sfor92@t@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -122,6 +122,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 import os
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media") # where upoaded files will be located in our file system
 MEDIA_URL = "media/" # to access media directory from browser
 
